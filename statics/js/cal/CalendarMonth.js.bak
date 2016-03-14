@@ -1,0 +1,207 @@
+'use strict'
+
+import React, {
+  Alert,
+  Component,
+  Text,
+  View,
+  TouchableHighlight,
+  StyleSheet,
+} from 'react-native';
+
+const WEEKDAY=['日','一','二','三','四','五','六'];
+const DAYDIFF=86400000;
+let weekSquence=[
+  ['27','28','29','30',' 1',' 2',' 3'],
+  [' 4',' 5',' 6',' 7',' 8',' 9','10'],
+  ['11','12','13','14','15','16','17'],
+  ['18','19','20','21','22','23','24'],
+  ['25','26','27','28','29','30','31'],
+  [' 1',' 2',' 3',' 4',' 5',' 6',' 7']
+];
+
+function initMonthDayData(monthOffset) {
+  let today = new Date();
+  let monthFirstDay= new Date(today.getFullYear(), today.getMonth() + monthOffset, today.getDate(), 0, 0, 0, 0);
+  monthFirstDay.setDate(1);
+  let index = monthFirstDay.getDay();
+  let pageFirstDay = new Date(monthFirstDay.getTime() - DAYDIFF * index);
+  let monthDayData = new Array(6);
+  let i = 0;
+  let j = 0;
+  for (i = 0; i < 6; i++) {
+    monthDayData[i]= new Array(7);
+  }
+  let dayOffset=0;
+  for (i = 0; i < 6; i++) {
+    for (j = 0; j < 7; j++) {
+      monthDayData[i][j]=new Date(pageFirstDay.getTime()+DAYDIFF*dayOffset);
+      dayOffset++;
+
+    }
+  }
+  return monthDayData;
+}
+
+
+class CalendarMonth extends Component {
+  constructor(props) {
+    super(props)
+    this.state={
+      monthShowed: new Date().getFullYear() + '-' + (new Date().getMonth() + 1),
+      monthDayData: initMonthDayData(0),
+      offset: 0,
+    }
+  }
+
+  changeMonth(direct) {
+    this.setState({offset: this.state.offset + direct})
+    let today=new Date();
+    let tmp=new Date(today.getFullYear(), today.getMonth() + this.state.offset, today.getDate(), 0, 0, 0, 0);
+    this.state.monthShowed= tmp.getFullYear() + '-' + (tmp.getMonth() + 1);
+    this.setState({monthDayData: initMonthDayData(this.state.offset)});
+
+  }
+
+  render() {
+    return (
+
+      <TouchableHighlight
+        underlayColor='rgba(34,26,38,0.1)'
+        onPress={()=>{this.props.changeType('monthly')}}>
+      <View style={styles.container}>
+        <View style={styles.topBar}>
+          <TouchableHighlight underlayColor='rgba(34,26,38,0.1)' onPress={()=>this.changeMonth(-1)}>
+            <Text style={styles.switchText}>上一月</Text>
+          </TouchableHighlight>
+          <Text style={styles.monthShowedText}>{this.state.monthShowed}</Text>
+
+          <TouchableHighlight underlayColor='rgba(34,26,38,0.1)' onPress={()=>this.changeMonth(1)}>
+            <Text style={styles.switchText}>下一月</Text>
+          </TouchableHighlight>
+        </View>
+        <View style={styles.body}>
+          <View style={styles.weekdayName}>
+            <Text style={styles.weekdayNameText}>{WEEKDAY[0]}</Text>
+            <Text style={styles.weekdayNameText}>{WEEKDAY[1]}</Text>
+            <Text style={styles.weekdayNameText}>{WEEKDAY[2]}</Text>
+            <Text style={styles.weekdayNameText}>{WEEKDAY[3]}</Text>
+            <Text style={styles.weekdayNameText}>{WEEKDAY[4]}</Text>
+            <Text style={styles.weekdayNameText}>{WEEKDAY[5]}</Text>
+            <Text style={styles.weekdayNameText}>{WEEKDAY[6]}</Text>
+          </View>
+          <View style={styles.weekdayDays}>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[0][0].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[0][1].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[0][2].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[0][3].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[0][4].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[0][5].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[0][6].getDate()}</Text>
+          </View>
+          <View style={styles.weekdayDays}>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[1][0].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[1][1].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[1][2].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[1][3].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[1][4].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[1][5].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[1][6].getDate()}</Text>
+          </View>
+          <View style={styles.weekdayDays}>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[2][0].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[2][1].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[2][2].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[2][3].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[2][4].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[2][5].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[2][6].getDate()}</Text>
+          </View>
+          <View style={styles.weekdayDays}>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[3][0].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[3][1].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[3][2].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[3][3].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[3][4].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[3][5].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[3][6].getDate()}</Text>
+          </View>
+          <View style={styles.weekdayDays}>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[4][0].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[4][1].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[4][2].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[4][3].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[4][4].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[4][5].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[4][6].getDate()}</Text>
+          </View>
+          <View style={styles.weekdayDays}>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[5][0].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[5][1].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[5][2].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[5][3].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[5][4].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[5][5].getDate()}</Text>
+            <Text style={styles.weekdayDaysText}>{this.state.monthDayData[5][6].getDate()}</Text>
+          </View>
+        </View>
+
+      </View>
+
+    </TouchableHighlight>
+    );
+  }
+}
+
+const styles=StyleSheet.create({
+  container: {
+    height: 314,
+    flex: 1,
+  },
+  topBar: {
+    padding: 11,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: 34,
+    backgroundColor: '#FFFFFF'
+  },
+  body: {
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    height: 280,
+  },
+  switchText: {
+    fontFamily: 'PingFang-SC-Regular',
+		fontSize: 12,
+		fontWeight: '100',
+		color: '#666666',
+  },
+  monthShowedText: {
+    fontFamily: 'PingFang-SC-Regular',
+		fontSize: 16,
+		fontWeight: '100',
+		color: '#F08300',
+  },
+  weekdayName: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  weekdayNameText: {
+    fontFamily: 'PingFang-SC-Regular',
+		fontSize: 12,
+		fontWeight: '100',
+		color: '#666666',
+  },
+  weekdayDays: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  weekdayDaysText: {
+		fontSize: 16,
+		fontWeight: '100',
+		color: '#333333',
+  },
+});
+
+export default CalendarMonth;

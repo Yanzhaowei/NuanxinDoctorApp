@@ -1,0 +1,21 @@
+{
+  "name": "NuanXinDoctorApp",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "dependencies": {
+    "react-native": "^0.20.0",
+    "react-native-date": "^1.0.3",
+    "react-native-fileupload": "^1.2.0",
+    "react-native-image-picker": "^0.15.0",
+    "react-native-picker": "^2.0.4",
+    "react-native-picker-android": "^0.3.8",
+    "react-native-radio-buttons": "^0.8.2",
+    "react-native-root-modal": "^1.0.3",
+    "react-native-scrollable-tab-view": "^0.4.0",
+    "react-native-storage": "0.0.12",
+    "react-native-viewpager": "^0.2.1"
+  }
+}
